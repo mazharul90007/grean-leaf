@@ -1,0 +1,44 @@
+{
+  "name": "green-leaf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "devDependencies": {
+    "@prisma/client": "^6.18.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.9.2",
+    "@types/nodemailer": "^7.0.3",
+    "prisma": "^6.18.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "add": "^2.0.6",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.10",
+    "pnpm": "^10.20.0",
+    "zod": "^4.1.12"
+  }
+}
