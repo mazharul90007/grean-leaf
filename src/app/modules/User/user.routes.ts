@@ -8,8 +8,15 @@ import auth from "../../middlewares/auth.js";
 import { UserRole } from "@prisma/client";
 import { fileUploadrer } from "../../../helpers/fileUpload.js";
 import { userValidation } from "./user.validation.js";
+import validateRequest from "../../middlewares/validateRequest.js";
 
 const router = express.Router();
+
+router.get(
+  "/",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  userController.getAllUserFromDB
+);
 
 //==================create admin===============
 router.post(
@@ -43,4 +50,29 @@ router.post(
   }
 );
 
+//================Update Status===================
+router.patch(
+  "/:id/status",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  validateRequest(userValidation.updateStatus),
+  userController.updateStatus
+);
+
+//=================Get My Profile==================
+router.get(
+  "/get-my-profile",
+  auth(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT, UserRole.SUPER_ADMIN),
+  userController.getMyProfile
+);
+
+//=================Update My Profile==================
+router.patch(
+  "/update-profile",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
+  fileUploadrer.upload.single("file"),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    return userController.updateMyProfile(req, res, next);
+  }
+);
 export const UserRoutes = router;
