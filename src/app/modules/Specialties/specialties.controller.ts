@@ -11,7 +11,7 @@ const insertIntoDb = async (
 
     res.status(200).json({
       success: true,
-      message: "Admin created successfully",
+      message: "Specialites created successfully",
       data: result,
     });
   } catch (error) {
