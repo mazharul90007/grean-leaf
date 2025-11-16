@@ -23,7 +23,7 @@ const upload = multer({ storage: storage });
 const uploadToCloudinary = async (
   file: Ifile
 ): Promise<ICloudinaryResponse> => {
-  console.log(file);
+  // console.log(file);
   // Configuration
   cloudinary.config({
     cloud_name: "dp6urj3gj",

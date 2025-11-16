@@ -88,6 +88,44 @@ const getAllDoctorFromDB = async (
   };
 };
 
+//=======================Get Doctor By Id==================
+const getDoctorById = async (id: string) => {
+  const result = await prisma.doctor.findUniqueOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+    include: {
+      doctorSpecialties: {
+        include: {
+          specialties: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
+//====================Delete Doctor data byId===============
+const deleteDoctorById = async (id: string) => {
+  return await prisma.$transaction(async (tx) => {
+    const deleteDoctor = await tx.doctor.delete({
+      where: {
+        id,
+      },
+    });
+    await tx.user.delete({
+      where: {
+        email: deleteDoctor.email,
+      },
+    });
+    return deleteDoctor;
+  });
+};
+
 export const doctorService = {
   getAllDoctorFromDB,
+  getDoctorById,
+  deleteDoctorById,
 };

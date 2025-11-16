@@ -25,7 +25,7 @@ const createDoctor = z.object({
     currentWorkingPlace: z
       .string()
       .nonempty("Current Working Pace is required"),
-    designaton: z.string().nonempty("Designation is required"),
+    designation: z.string().nonempty("Designation is required"),
   }),
 });
 

@@ -51,7 +51,7 @@ model Doctor {
   appointmentFee      Int
   qualification       String
   currentWorkingPlace String
-  designaton          String
+  designation         String
   averageRating       Float?
   isDeleted           Boolean  @default(false)
   createdAt           DateTime @default(now())

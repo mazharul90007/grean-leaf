@@ -24,6 +24,34 @@ const getAllDoctorFromDB: RequestHandler = catchAsync(
   }
 );
 
+//=======================Get Doctor By Id==================
+const getDoctorById = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await doctorService.getDoctorById(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Doctor retrieval successful by Id",
+    data: result,
+  });
+});
+
+//====================Delete Doctor data byId===============
+const deleteDoctorById = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await doctorService.deleteDoctorById(id);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Doctor data hard delete successful",
+    data: result,
+  });
+});
+
 export const doctorController = {
   getAllDoctorFromDB,
+  getDoctorById,
+  deleteDoctorById,
 };
