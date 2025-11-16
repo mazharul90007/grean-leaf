@@ -26,8 +26,14 @@ const getAllSpecialties = async () => {
 };
 
 //=================Delete a Specialties by Id============
-const deleteSpecialtiesById = async () => {
-  console.log("Delete a Specialties");
+const deleteSpecialtiesById = async (id: string) => {
+  const result = await prisma.specialties.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
 };
 
 export const specialtiesService = {

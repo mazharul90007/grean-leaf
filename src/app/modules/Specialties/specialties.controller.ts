@@ -3,6 +3,7 @@ import { specialtiesService } from "./specialties.service.js";
 import catchAsync from "../../../shared/catchAsync.js";
 import sendResponse from "../../../shared/sendResponse.js";
 import status from "http-status";
+import { string } from "zod";
 
 //====================Create Specialties==================
 const insertIntoDb = async (
@@ -38,7 +39,8 @@ const getAllSpecialties = catchAsync(async (req: Request, res: Response) => {
 //=================Delete a Specialties by Id============
 const deleteSpecialtiesById = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await specialtiesService.deleteSpecialtiesById();
+    const id = req.params.id as string;
+    const result = await specialtiesService.deleteSpecialtiesById(id);
 
     sendResponse(res, {
       statusCode: status.OK,

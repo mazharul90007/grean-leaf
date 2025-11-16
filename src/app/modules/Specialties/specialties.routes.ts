@@ -10,6 +10,7 @@ import auth from "../../middlewares/auth.js";
 import { UserRole } from "@prisma/client";
 const router = express.Router();
 
+//====================Create a Specialties================
 router.post(
   "/",
   fileUploadrer.upload.single("file"),
@@ -21,9 +22,14 @@ router.post(
   }
 );
 
+//=================Get a Specialties=====================
 router.get("/", specialtiesController.getAllSpecialties);
 
 //=================Delete a Specialties by Id============
-router.delete("/:id", specialtiesController.deleteSpecialtiesById);
+router.delete(
+  "/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  specialtiesController.deleteSpecialtiesById
+);
 
 export const SpecialtiesRoutes = router;
