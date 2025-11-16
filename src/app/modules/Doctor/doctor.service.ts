@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, UserStatus } from "@prisma/client";
 import prisma from "../../../shared/prisma.js";
 import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type { IDoctorFilterRequest } from "./doctor.interface.js";
@@ -124,8 +124,33 @@ const deleteDoctorById = async (id: string) => {
   });
 };
 
+//====================Doctor Soft Delete by Id===============
+const doctorSoftDelete = async (id: string) => {
+  return await prisma.$transaction(async (tx) => {
+    const softDeleteDoctor = await tx.doctor.update({
+      where: {
+        id,
+      },
+      data: {
+        isDeleted: true,
+      },
+    });
+    await tx.user.update({
+      where: {
+        email: softDeleteDoctor.email,
+      },
+      data: {
+        status: UserStatus.DELETED,
+      },
+    });
+
+    return softDeleteDoctor;
+  });
+};
+
 export const doctorService = {
   getAllDoctorFromDB,
   getDoctorById,
   deleteDoctorById,
+  doctorSoftDelete,
 };

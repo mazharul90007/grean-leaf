@@ -18,4 +18,11 @@ router.delete(
   doctorController.deleteDoctorById
 );
 
+//====================Doctor Soft Delete by Id===============
+router.patch(
+  "/soft/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  doctorController.doctorSoftDelete
+);
+
 export const DoctorRoutes = router;
