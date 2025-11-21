@@ -1,7 +1,10 @@
 import { Prisma, UserStatus } from "@prisma/client";
 import prisma from "../../../shared/prisma.js";
 import type { IPaginationOptions } from "../../interfaces/pagination.js";
-import type { IDoctorFilterRequest } from "./doctor.interface.js";
+import type {
+  IDoctorFilterRequest,
+  IDoctorUpdate,
+} from "./doctor.interface.js";
 import calculatePagination from "../../../helpers/paginationHelpers.js";
 import { doctorSearchableFields } from "./doctor.constants.js";
 
@@ -149,7 +152,7 @@ const doctorSoftDelete = async (id: string) => {
 };
 
 //=====================Update Doctor========================
-const updateDoctorData = async (id: string, payload: any) => {
+const updateDoctorData = async (id: string, payload: IDoctorUpdate) => {
   const { specialties, ...doctorData } = payload;
   console.log("Specialties:", specialties);
   console.log("Doctor:", doctorData);
