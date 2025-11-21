@@ -25,4 +25,11 @@ router.patch(
   doctorController.doctorSoftDelete
 );
 
+//=====================Update Doctor========================
+router.patch(
+  "/update/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+  doctorController.updatedDoctorData
+);
+
 export const DoctorRoutes = router;

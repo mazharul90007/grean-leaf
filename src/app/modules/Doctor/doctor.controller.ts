@@ -64,9 +64,25 @@ const doctorSoftDelete = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//=====================Update Doctor========================
+const updatedDoctorData = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const payload = req.body;
+
+  const result = await doctorService.updateDoctorData(id, payload);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Doctor data updated successful",
+    data: result,
+  });
+});
+
 export const doctorController = {
   getAllDoctorFromDB,
   getDoctorById,
   deleteDoctorById,
   doctorSoftDelete,
+  updatedDoctorData,
 };
