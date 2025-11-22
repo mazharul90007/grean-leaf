@@ -20,7 +20,7 @@ const getAllPatient = async (
       OR: patientSearchableFields.map((field) => ({
         [field]: {
           contains: searchTerm,
-          module: "insensitive",
+          mode: "insensitive",
         },
       })),
     });
@@ -150,9 +150,64 @@ const softDeletePatient = async (id: string): Promise<Patient | null> => {
   return result;
 };
 
+//==========================Update Patient Data=========================
+const updatePatient = async (id: string, payload: any) => {
+  const { patientHealthData, medicalReport, ...patientData } = payload;
+
+  const patientInfo = await prisma.patient.findUniqueOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+  });
+
+  await prisma.$transaction(async (tx) => {
+    //Update Patient Data
+    await tx.patient.update({
+      where: {
+        id,
+      },
+      data: patientData,
+      include: {
+        patientHealthData: true,
+        medicalReports: true,
+      },
+    });
+
+    //create or update patient health data
+    if (patientHealthData) {
+      await tx.patientHealthData.upsert({
+        where: {
+          patientId: patientInfo.id,
+        },
+        update: patientHealthData,
+        create: { ...patientHealthData, patientId: patientInfo.id },
+      });
+    }
+
+    if (medicalReport) {
+      await tx.medicalReport.create({
+        data: { ...medicalReport, patientId: patientInfo.id },
+      });
+    }
+  });
+
+  const responseData = await prisma.patient.findUnique({
+    where: {
+      id: patientInfo.id,
+    },
+    include: {
+      patientHealthData: true,
+      medicalReports: true,
+    },
+  });
+  return responseData;
+};
+
 export const PatientService = {
   PatientById,
   getAllPatient,
   deletePatientById,
   softDeletePatient,
+  updatePatient,
 };

@@ -29,10 +29,17 @@ router.delete(
 );
 
 //==========================Delete Patient By Id=========================
-router.delete(
+router.patch(
   "/soft/:id",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.PATIENT),
   PatientController.softDeletePatient
+);
+
+//======================Update Patient Data==========================
+router.patch(
+  "/update/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.PATIENT),
+  PatientController.updatePatient
 );
 
 export const PatientRoutes = router;

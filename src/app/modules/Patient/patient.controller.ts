@@ -63,9 +63,23 @@ const softDeletePatient = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//==========================Update Patient Data=========================
+const updatePatient = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id as string;
+  const result = await PatientService.updatePatient(id, req.body);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "Patient Data Updated successful",
+    data: result,
+  });
+});
+
 export const PatientController = {
   getAllPatient,
   getPatientById,
   deletePatientById,
   softDeletePatient,
+  updatePatient,
 };
