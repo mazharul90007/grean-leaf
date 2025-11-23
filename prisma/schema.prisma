@@ -59,6 +59,7 @@ model Doctor {
 
   user              User                @relation(fields: [email], references: [email])
   doctorSpecialties DoctorSpecialties[]
+  doctorSchedules   DoctorSchedule[]
 
   @@map("doctors")
 }
@@ -139,6 +140,31 @@ model MedicalReport {
   patient Patient @relation(fields: [patientId], references: [id])
 
   @@map("medical_reports")
+}
+
+model Schedule {
+  id              String           @id @default(uuid())
+  startDate       DateTime
+  endDate         DateTime
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  doctorSchedules DoctorSchedule[]
+
+  @@map("schedules")
+}
+
+model DoctorSchedule {
+  doctorId String
+  doctor   Doctor @relation(fields: [doctorId], references: [id])
+
+  scheduleId String
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  isBooked      Boolean
+  appointmentId String?
+
+  @@id([doctorId, scheduleId])
+  @@map("doctor_schedules")
 }
 
 enum UserRole {

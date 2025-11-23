@@ -1,7 +1,10 @@
 import { UserStatus, type Patient } from "@prisma/client";
 import prisma from "../../../shared/prisma.js";
 import type { IPaginationOptions } from "../../interfaces/pagination.js";
-import type { IpatientFilterRequest } from "./patient.interface.js";
+import type {
+  IpatientFilterRequest,
+  IPatientUpdate,
+} from "./patient.interface.js";
 import calculatePagination from "../../../helpers/paginationHelpers.js";
 import { patientSearchableFields } from "./patient.constants.js";
 
@@ -87,7 +90,7 @@ const PatientById = async (id: string): Promise<Patient | null> => {
 };
 
 //==========================Delete Patient By Id=========================
-const deletePatientById = async (id: string) => {
+const deletePatientById = async (id: string): Promise<Patient | null> => {
   const result = await prisma.$transaction(async (tx) => {
     //delete Medical Report
     await tx.medicalReport.deleteMany({
@@ -151,7 +154,10 @@ const softDeletePatient = async (id: string): Promise<Patient | null> => {
 };
 
 //==========================Update Patient Data=========================
-const updatePatient = async (id: string, payload: any) => {
+const updatePatient = async (
+  id: string,
+  payload: Partial<IPatientUpdate>
+): Promise<Patient | null> => {
   const { patientHealthData, medicalReport, ...patientData } = payload;
 
   const patientInfo = await prisma.patient.findUniqueOrThrow({
