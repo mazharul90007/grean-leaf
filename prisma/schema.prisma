@@ -144,8 +144,8 @@ model MedicalReport {
 
 model Schedule {
   id              String           @id @default(uuid())
-  startDate       DateTime
-  endDate         DateTime
+  startDateTime   DateTime
+  endDateTime     DateTime
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   doctorSchedules DoctorSchedule[]
