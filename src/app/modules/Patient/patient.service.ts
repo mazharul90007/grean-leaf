@@ -1,4 +1,4 @@
-import { UserStatus, type Patient } from "@prisma/client";
+import { Prisma, UserStatus, type Patient } from "@prisma/client";
 import prisma from "../../../shared/prisma.js";
 import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type {
@@ -45,7 +45,8 @@ const getAllPatient = async (
     isDeleted: false,
   });
 
-  const whereCondition = andConditions.length > 0 ? { AND: andConditions } : {};
+  const whereCondition: Prisma.PatientWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
   const result = await prisma.patient.findMany({
     where: whereCondition,
     skip,

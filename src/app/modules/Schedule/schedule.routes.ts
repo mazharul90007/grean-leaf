@@ -12,4 +12,25 @@ router.post(
   ScheduleController.createSchedule
 );
 
+//====================Get All Schedule==================
+router.get(
+  "/",
+  auth(UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  ScheduleController.getAllSchedules
+);
+
+//====================Get Schedule by Id==========================
+router.get(
+  "/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+  ScheduleController.getScheduleById
+);
+
+//====================Delete Schedule by Id==========================
+router.delete(
+  "/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  ScheduleController.deleteScheduleById
+);
+
 export const ScheduleRoutes = router;
