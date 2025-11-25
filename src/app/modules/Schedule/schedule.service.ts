@@ -155,10 +155,25 @@ const getAllSchedules = async (
 };
 
 //====================Get Schedule by Id==========================
-const getScheduleById = async (id: string) => {};
+const getScheduleById = async (id: string): Promise<Schedule | null> => {
+  const result = await prisma.schedule.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
 
 //====================Delete Schedule by Id==========================
-const deleteScheduleById = async (id: string) => {};
+const deleteScheduleById = async (id: string): Promise<Schedule | null> => {
+  const result = await prisma.schedule.delete({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
 
 export const ScheduleService = {
   createSchedule,
