@@ -85,7 +85,7 @@ const createAppointment = async (user: IAuthUser, payload: any) => {
     //Create Payment data
     await tx.payment.create({
       data: {
-        appointtmentId: appointmentData.id,
+        appointmentId: appointmentData.id,
         amount: doctorData.appointmentFee,
         transactionId,
       },
@@ -189,7 +189,7 @@ const getAllAppointment = async (filters: any, options: IPaginationOptions) => {
       AND: Object.keys(filterData).map((key) => {
         return {
           [key]: {
-            equals: filterData[key],
+            equals: (filterData as any)[key],
           },
         };
       }),
@@ -198,7 +198,7 @@ const getAllAppointment = async (filters: any, options: IPaginationOptions) => {
 
   const whereCondition: Prisma.AppointmentWhereInput =
     andCondition.length > 0 ? { AND: andCondition } : {};
-  const result = prisma.appointment.findMany({
+  const result = await prisma.appointment.findMany({
     where: whereCondition,
     skip,
     take: limit,
