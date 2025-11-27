@@ -40,6 +40,7 @@
     "http-status": "^2.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
     "nodemailer": "^7.0.10",
     "npm": "^11.6.4",
     "pnpm": "^10.20.0",

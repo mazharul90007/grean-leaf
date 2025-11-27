@@ -9,6 +9,8 @@ import router from "./app/routes/index.js";
 import status from "http-status";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler.js";
 import cookieParser from "cookie-parser";
+import { AppointmentServices } from "./app/modules/Appoinment/appoinment.service.js";
+import cron from "node-cron";
 
 const app: Application = express();
 
@@ -17,6 +19,16 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+AppointmentServices.cancelUnpaidAppointments();
+
+cron.schedule("* * * * *", () => {
+  try {
+    AppointmentServices.cancelUnpaidAppointments();
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Green Leaf is running");
