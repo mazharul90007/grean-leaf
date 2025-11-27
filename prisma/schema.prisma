@@ -72,7 +72,7 @@ model Patient {
   name          String
   email         String   @unique
   profilePhoto  String?
-  contactNumber String
+  contactNumber String?
   address       String?
   isDeleted     Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -205,7 +205,7 @@ model Payment {
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
   amount             Float
-  transactionId      String
+  transactionId      String        @unique
   status             PaymentStatus @default(UNPAID)
   paymentGatewayData Json?
   createdAt          DateTime      @default(now())

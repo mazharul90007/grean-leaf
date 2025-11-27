@@ -2,8 +2,9 @@ import axios from "axios";
 import config from "../../config/index.js";
 import ApiError from "../../errors/ApiErrors.js";
 import status from "http-status";
+import type { IPaymentData } from "./ssl.interface.js";
 
-const initPayment = async (paymentData: any) => {
+const initPayment = async (paymentData: IPaymentData) => {
   try {
     const data = {
       store_id: config.ssl.storeId,
@@ -27,7 +28,7 @@ const initPayment = async (paymentData: any) => {
       cus_state: "Dhaka",
       cus_postcode: "1000",
       cus_country: "Bangladesh",
-      cus_phone: paymentData.contactNumber,
+      cus_phone: paymentData.phoneNumber,
       cus_fax: "N/A",
       ship_name: "N/A",
       ship_add1: "N/A",
@@ -51,6 +52,20 @@ const initPayment = async (paymentData: any) => {
   }
 };
 
+const paymentValidation = async (payload: any) => {
+  try {
+    const response = await axios({
+      method: "get",
+      url: `${config.ssl.sslValidationApi}?val_id=${payload.val_id}&store_id=${config.ssl.storeId}&store_passwd=${config.ssl.storePass}&format=json`,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new ApiError(status.BAD_REQUEST, "Payment Validation failed");
+  }
+};
+
 export const SSLService = {
   initPayment,
+  paymentValidation,
 };
