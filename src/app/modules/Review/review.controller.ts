@@ -9,7 +9,10 @@ import { ReviewService } from "./review.service.js";
 const createReview = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
     const user = req.user;
-    const result = ReviewService.createReview(user as IAuthUser, req.body);
+    const result = await ReviewService.createReview(
+      user as IAuthUser,
+      req.body
+    );
 
     sendResponse(res, {
       statusCode: status.OK,
