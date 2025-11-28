@@ -2,6 +2,9 @@ import status from "http-status";
 import prisma from "../../../shared/prisma.js";
 import ApiError from "../../errors/ApiErrors.js";
 import type { IAuthUser } from "../../interfaces/common.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
+import calculatePagination from "../../../helpers/paginationHelpers.js";
+import type { Prisma } from "@prisma/client";
 
 //======================Create Review======================
 const createReview = async (user: IAuthUser, payload: any) => {
@@ -57,6 +60,60 @@ const createReview = async (user: IAuthUser, payload: any) => {
   });
 };
 
+//==================Get All Reviews=======================
+const getAllReviews = async (filters: any, options: IPaginationOptions) => {
+  const { patientEmail, doctorEmail } = filters;
+  const { limit, page, skip } = calculatePagination(options);
+  const andCondition = [];
+
+  if (patientEmail) {
+    andCondition.push({
+      patient: {
+        email: patientEmail,
+      },
+    });
+  }
+
+  if (doctorEmail) {
+    andCondition.push({
+      doctor: {
+        email: doctorEmail,
+      },
+    });
+  }
+
+  const whereCondition: Prisma.ReviewWhereInput =
+    andCondition.length > 0 ? { AND: andCondition } : {};
+
+  const result = await prisma.review.findMany({
+    where: whereCondition,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : { createdAt: "desc" },
+    include: {
+      doctor: true,
+      patient: true,
+    },
+  });
+
+  const total = await prisma.review.count({
+    where: whereCondition,
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
+};
+
 export const ReviewService = {
   createReview,
+  getAllReviews,
 };

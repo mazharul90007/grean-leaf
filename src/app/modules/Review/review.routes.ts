@@ -8,4 +8,11 @@ const router = express.Router();
 //======================Create Review======================
 router.post("/", auth(UserRole.PATIENT), ReviewController.createReview);
 
+//==================Get All Reviews=======================
+router.get(
+  "/",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  ReviewController.getAllReviews
+);
+
 export const ReviewRoutes = router;
