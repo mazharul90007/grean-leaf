@@ -2,6 +2,7 @@ import { PaymentStatus, UserRole } from "@prisma/client";
 import type { IAuthUser } from "../../interfaces/common.js";
 import prisma from "../../../shared/prisma.js";
 
+//==================Get Meta Data ================
 const getMetaData = async (user: IAuthUser) => {
   let metaData;
   switch (user?.role) {
@@ -37,6 +38,8 @@ const getSuperAdminMetaData = async () => {
     },
   });
   const totalRevenueAmount = totalRevenue._sum.amount;
+  const barChartData = await getBarChartData();
+  const pieChartData = await getPieChartData();
 
   return {
     appointmentCount,
@@ -45,10 +48,12 @@ const getSuperAdminMetaData = async () => {
     doctorCount,
     paymentCount,
     totalRevenueAmount,
+    barChartData,
+    pieChartData,
   };
 };
 
-//=============Admin Meta Data=================
+//============******Admin Meta Data*****===============
 const getAdminMetaData = async () => {
   const appointmentCount = await prisma.appointment.count();
   const patientCount = await prisma.patient.count();
@@ -61,6 +66,8 @@ const getAdminMetaData = async () => {
     },
   });
   const totalRevenueAmount = totalRevenue._sum.amount;
+  const barChartData = await getBarChartData();
+  const pieChartData = await getPieChartData();
 
   return {
     appointmentCount,
@@ -68,10 +75,12 @@ const getAdminMetaData = async () => {
     doctorCount,
     paymentCount,
     totalRevenueAmount,
+    barChartData,
+    pieChartData,
   };
 };
 
-//===============Doctor meta Data==============
+//===============******Doctor meta Data******==============
 const getDoctorMetaData = async (user: IAuthUser) => {
   //find doctor data
   const doctorData = await prisma.doctor.findUniqueOrThrow({
@@ -137,7 +146,7 @@ const getDoctorMetaData = async (user: IAuthUser) => {
   };
 };
 
-//===========Patient Meta Data==========
+//===========******Patient Meta Data******==========
 const getPatientMetaData = async (user: IAuthUser) => {
   //find doctor data
   const patientData = await prisma.patient.findUniqueOrThrow({
@@ -187,6 +196,36 @@ const getPatientMetaData = async (user: IAuthUser) => {
     reviewCount,
     formattedAppointmentStatusDistribution,
   };
+};
+
+//====================Get Bar Chart Data ====================
+const getBarChartData = async () => {
+  const appointmentCountByMonth: { month: Date; count: bigint }[] =
+    await prisma.$queryRaw`
+    SELECT DATE_TRUNC('month', "createdAt") AS month,
+    CAST(COUNT(*) AS INTEGER) AS COUNT
+    FROM "appoinments"
+    GROUP BY month
+    ORDER BY month ASC
+    `;
+
+  return appointmentCountByMonth;
+};
+
+//==================Pie chart Data==================
+const getPieChartData = async () => {
+  const appointmentStatusDistribution = await prisma.appointment.groupBy({
+    by: ["status"],
+    _count: { id: true },
+  });
+
+  const formattedAppointmentStatusDistribution =
+    appointmentStatusDistribution.map((count) => ({
+      status: count.status,
+      count: Number(count._count.id),
+    }));
+
+  return formattedAppointmentStatusDistribution;
 };
 
 export const MetaServices = {
