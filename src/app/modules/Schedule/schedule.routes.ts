@@ -26,7 +26,7 @@ router.get(
   ScheduleController.getScheduleById
 );
 
-//====================Delete Schedule by Id==========================
+//====================Delete Schedule by Id=======================
 router.delete(
   "/:id",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
