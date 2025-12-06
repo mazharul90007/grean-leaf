@@ -1,0 +1,1 @@
+{"version":3,"file":"pagination.d.ts","sourceRoot":"","sources":["../../../src/app/interfaces/pagination.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,kBAAkB,GAAG;IAC/B,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,MAAM,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;IAC5B,SAAS,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;CAChC,CAAC"}

@@ -1,0 +1,46 @@
+import { specialtiesService } from "./specialties.service.js";
+import catchAsync from "../../../shared/catchAsync.js";
+import sendResponse from "../../../shared/sendResponse.js";
+import status from "http-status";
+import { string } from "zod";
+//====================Create Specialties==================
+const insertIntoDb = async (req, res, next) => {
+    try {
+        const result = await specialtiesService.insertIntoDB(req);
+        res.status(200).json({
+            success: true,
+            message: "Specialites created successfully",
+            data: result,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+//===================Get All Specialties====================
+const getAllSpecialties = catchAsync(async (req, res) => {
+    const result = await specialtiesService.getAllSpecialties();
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "All Specialteis data fetched!",
+        data: result,
+    });
+});
+//=================Delete a Specialties by Id============
+const deleteSpecialtiesById = catchAsync(async (req, res) => {
+    const id = req.params.id;
+    const result = await specialtiesService.deleteSpecialtiesById(id);
+    sendResponse(res, {
+        statusCode: status.OK,
+        success: true,
+        message: "The Specialties has been deleted successfully",
+        data: null,
+    });
+});
+export const specialtiesController = {
+    insertIntoDb,
+    getAllSpecialties,
+    deleteSpecialtiesById,
+};
+//# sourceMappingURL=specialties.controller.js.map
