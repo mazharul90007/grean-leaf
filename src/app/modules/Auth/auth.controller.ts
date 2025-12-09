@@ -25,6 +25,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//======================Refresh Token=====================
+
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
   const result = await authServices.refreshToken(refreshToken);
@@ -40,6 +42,8 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     // },
   });
 });
+
+//======================Change Password======================
 
 const changePassword = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {

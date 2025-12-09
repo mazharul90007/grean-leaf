@@ -1,1 +1,0 @@
-{"version":3,"file":"admin.interface.d.ts","sourceRoot":"","sources":["../../../../src/app/modules/Admin/admin.interface.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,mBAAmB,GAAG;IAChC,IAAI,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;IAC1B,KAAK,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;IAC3B,aAAa,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;IACnC,UAAU,CAAC,EAAE,MAAM,GAAG,SAAS,CAAC;CACjC,CAAC"}
